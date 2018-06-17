@@ -8,6 +8,8 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { MessengerPage } from '../pages/messenger/messenger';
 import {AngularFireModule} from "angularfire2";
+import {AngularFireAuth, AngularFireAuthModule} from "angularfire2/auth";
+import {AngularFireDatabase, AngularFireDatabaseModule} from "angularfire2/database";
 
 var firebaseAuth = {
   apiKey: "AIzaSyDloSPpn-sb6lkS-EsEqZk9MsMEfzP_3Ao",
@@ -28,7 +30,9 @@ var firebaseAuth = {
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    AngularFireModule.initializeApp(firebaseAuth)
+    AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
+    AngularFireModule.initializeApp(firebaseAuth),
+    AngularFireDatabaseModule
 ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -39,7 +43,7 @@ var firebaseAuth = {
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
   ]
 })
 export class AppModule {}

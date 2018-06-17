@@ -10,7 +10,7 @@ import { MessengerPage } from '../messenger/messenger'
 export class HomePage {
 
   //create fields
-  username: string=''; //create username field of type string
+  username: string='hamza'; //create username field of type string
 
   constructor(public navCtrl: NavController, private alertCtrl: AlertController) { //initialize fields
 
@@ -28,7 +28,7 @@ export class HomePage {
   loginUser(){
     //loginUser method for onlicck on login button
     //change for firebase authentication later
-    if (/^[a-zA-Z0-9]+@/.test(this.username)){
+    if (/^[a-zA-Z0-9]+$/.test(this.username)){
       //sign in the user
       this.navCtrl.push(MessengerPage, {
         username: this.username
