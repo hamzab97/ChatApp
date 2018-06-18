@@ -14,8 +14,9 @@
 
 
 <ion-content padding>
-  <div id="chatMessages">
-
+  <div id="message" *ngFor="let message of encryptedMessages">
+    <div class="username">{{ message.username }}</div>
+    <div class="message"> {{ message.message }} </div>
   </div>
 </ion-content>
 
@@ -23,9 +24,9 @@
   <ion-toolbar>
     <ion-input typ="text" [(ngModel)] = "message"></ion-input>
     <ion-buttons end>
-      <button ion-button icon-end color="royal">
+      <button ion-button icon-end color="royal" (click)="sendMessage()">
         Send
-        <ion-icon name="send" (click)="sendMessage()"></ion-icon>
+        <ion-icon name="send"></ion-icon>
       </button>
     </ion-buttons>
   </ion-toolbar>
