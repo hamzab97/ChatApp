@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {IonicPage, Item, NavController, NavParams} from 'ionic-angular';
-import {AngularFireDatabase} from "angularfire2/database";
+import {AngularFireDatabase, AngularFireList, SnapshotAction} from "angularfire2/database";
 import CryptoJS from 'crypto-js';
 import { map } from 'rxjs/operators';
 import {AngularFirestoreCollection} from "angularfire2/firestore";
@@ -23,32 +23,36 @@ import {Subscription} from "rxjs/Subscription";
 export class MessengerPage {
   username: string='';
   message: string='';
-  encryptedMessages: object[] = [];
-  private subscription: Subscription;
+  encryptedMessages: Observable<SnapshotAction<any>[]>;
+  subscription: Subscription;
+  messages: any;
 
   constructor(public db: AngularFireDatabase, public navCtrl: NavController, public navParams: NavParams) {
-    this.username = this.navParams.get('username');
-    this.message = this.navParams.get('message');
-    this.subscription = this.db.list('messenger').valueChanges().map(elem =>{
-      this.encryptedMessages.push(elem);
-      console.log(elem);
-    }).subscribe();
-    // for (let m in this.encryptedMessages){
-    //   m = m.toString(CryptoJS.enc.Utf8);
-    // }
+    // this.username = this.navParams.get('username');
+    // this.message = this.navParams.get('message');
     console.log('hoiluuluu')
   }
 
-  getDecryptedMessages(){
-    return this.encryptedMessages;
+  ngOnInit(){
+    this.encryptedMessages = this.getMessage().snapshotChanges();
+    this.subscription = this.encryptedMessages.subscribe(data => {
+      data.map(elem =>{
+        this.messages.push(elem);
+      })
+    });
+    console.log('ngonit launch')
+  }
+
+  getMessage(){
+    return this.db.list('/messenger');
   }
 
   sendMessage(){
-    this.message = CryptoJS.AES.encrypt(this.message, 'secret key 123');
-    let bytes = CryptoJS.AES.decrypt(this.message.toString(), 'secret key 123');
+    // this.message = CryptoJS.AES.encrypt(this.message, 'secret key 123');
+    // let bytes = CryptoJS.AES.decrypt(this.message.toString(), 'secret key 123');
     this.db.list("/messenger").push({
       username: this.username,
-      message: bytes
+      message: this.message
     }) //access database and push new message
     .then(()=>{
       //what happens once message is sent
