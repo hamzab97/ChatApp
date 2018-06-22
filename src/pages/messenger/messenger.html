@@ -14,7 +14,7 @@
 
 
 <ion-content padding>
-  <div id="message" *ngFor="let m of messages | async"> <!--ngFor allows you to iterate over an object & async subscribes to the service-->
+  <div id="message" *ngFor="let m of messages"> <!--ngFor allows you to iterate over an object & async subscribes to the service-->
     <div class="username">{{ m.username }}</div>
     <div class="message"> {{ m.message }} </div>
   </div>
