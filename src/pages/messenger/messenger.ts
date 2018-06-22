@@ -4,7 +4,7 @@ import {AngularFireDatabase, AngularFireList, SnapshotAction} from "angularfire2
 import CryptoJS from 'crypto-js';
 import { map } from 'rxjs/operators';
 import {AngularFirestoreCollection} from "angularfire2/firestore";
-import {Observable} from "rxjs/Observable";
+import { Observable } from 'rxjs';
 import {Subscription} from "rxjs/Subscription";
 import * as firebase from 'firebase';
 
@@ -25,10 +25,10 @@ export class MessengerPage {
   username: string='';
   message: string='';
   subscription: Subscription;
-  
+
   encryptedMessages: Observable<any[]>;
-  ref = firebase.database().ref('/messenger');
-  private messages: AngularFireList<any>;
+  ref = firebase.database().ref('messenger');
+  messages: Observable<any[]>;
 
   constructor(public db: AngularFireDatabase, public navCtrl: NavController, public navParams: NavParams) {
     // this.username = this.navParams.get('username');
@@ -44,7 +44,7 @@ export class MessengerPage {
     // });
     // this.encryptedMessages.subscribe(console.log);
     console.log('ngonit launch');
-    this.messages = this.getMessage();
+    this.messages = this.getMessage().valueChanges();
   }
 
   getMessage(){
